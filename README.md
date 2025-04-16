@@ -71,8 +71,6 @@ Deployed on AWS EC2 (Ubuntu) instance using Nginx and Gunicorn for scalability.
  ┃ ┣ TB_1
  ┣ 📂saved_models/
  ┃ ┣ vgg16_model.keras
- ┃ ┣ resnet50_model.keras
- ┃ ┗ efficientnetb0_model.keras
  ┣ app.py
  ┣ TB_detect.ipynb
  ┣ 📄README.md
