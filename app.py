@@ -10,13 +10,28 @@ import cv2
 import base64
 import io
 import os
+import gdown
 
 # --- CONFIG ---
 st.set_page_config(page_title="TB Detection App", layout="centered")
 
-# --- LOAD MODEL ---
-MODEL_PATH = "saved_models/VGG16_tb_model.keras"
-model = load_model(MODEL_PATH)
+# --- MODEL DOWNLOAD AND LOAD ---
+MODEL_PATH = "saved_models/vgg16_tb_model.keras"
+MODEL_URL = "https://drive.google.com/uc?id=1XfYMP0rDl9v5Zg5sP7_DBRvPENn2U1_0"  # Your model's Google Drive ID
+
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        os.makedirs("saved_models", exist_ok=True)
+        gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
+@st.cache_resource
+def load_model_local():
+    download_model()
+    return tf.keras.models.load_model(MODEL_PATH)
+
+model = load_model_local()
+
+
 
 class_names = ["Normal", "Tuberculosis"]
 
@@ -72,11 +87,11 @@ elif page == "Predict":
 
     if uploaded_file is not None:
         image_to_use = uploaded_file
-        st.info("✅ Using uploaded image.")
+        st.info(" Using uploaded image.")
     elif sample_choice != "None":
         sample_path = os.path.join(sample_dir, sample_choice)
         image_to_use = open(sample_path, "rb")
-        st.info(f"✅ Using sample image: {sample_choice}")
+        st.info(f" Using sample image: {sample_choice}")
 
     if image_to_use is not None:
         label, confidence, display_img, img_array = predict(image_to_use)
