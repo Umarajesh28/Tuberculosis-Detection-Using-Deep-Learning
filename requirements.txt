@@ -6,3 +6,4 @@ numpy
 matplotlib
 streamlit-option-menu
 gdown
+pyarrow
